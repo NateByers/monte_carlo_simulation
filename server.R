@@ -4,8 +4,9 @@ shinyServer(function(input, output) {
   
   output$empirical_distributions <- renderPlot({
     par(mfrow=c(4,1))
+    dev.new(height=5)
     for(i in c("mpg", "cyl", "hp", "wt")){
-      hist(cars[[i]], main = i, xlab = "")
+      hist(cars[[i]], main = i, xlab = "", ylab = "")
     }
   })
   
@@ -34,7 +35,12 @@ shinyServer(function(input, output) {
     
     predicted <- predict(lm_fit, sims)
     
-    hist(predicted, xlab = "", main = "Histogram of MPG")
+    limits <- quantile(predicted, c(.05, .95))
+    
+    h <- hist(predicted, xlab = "", main = "Histogram of MPG")
+    print(str(h))
+    abline(v = limits)
+    text(limits, rep(max(h$counts), 2), c("5 PCTL", "95 PCTL"), pos = c(2, 4))
   })
   
 })
