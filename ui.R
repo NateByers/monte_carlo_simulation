@@ -2,55 +2,64 @@
 
 dashboardPage(
   dashboardHeader(title = "Monte Carlo Simulation"),
-  dashboardSidebar(#disable = TRUE
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Model", tabName = "model", icon = icon("line-chart")),
+      menuItem("Simulation", tabName = "simulation", icon = icon("area-chart"))
+    )
     ),
   dashboardBody(
-    fluidRow(
-      box(title = "InjPress Parameters", width = 4,
-          fluidRow(
-        column(width = 5,
-          numericInput("injpress_mean", "Mean", 
-                       value = mean(insulation_strength$InjPress))
-        ),
-        column(width = 5,
-          numericInput("injpress_sd", "SD", 
-                       value = sd(insulation_strength$InjPress))
-        )
-          ),
-        fluidRow(
-          plotOutput("injpress_distribution", width = "80%", height = "200px")
-        )
-      ),
-      box(title = "InjTemp Parameters", width = 4,
-          fluidRow(
-            column(width = 5,
-                   numericInput("injtemp_mean", "Mean", 
-                                value = mean(insulation_strength$InjTemp))
-            ),
-            column(width = 5,
-                   numericInput("injtemp_sd", "SD", 
-                                value = sd(insulation_strength$InjTemp))
-            )
-          ),
-          fluidRow(
-            plotOutput("injtemp_distribution", width = "80%", height = "200px")
-          )
-          ),
-      box(title = "CoolTemp Parameters", width = 4,
-          fluidRow(
-            column(width = 5,
-                   numericInput("cooltemp_mean", "Mean", 
-                                value = mean(insulation_strength$CoolTemp))
-            ),
-            column(width = 5,
-                   numericInput("cooltemp_sd", "SD", 
-                                value = sd(insulation_strength$CoolTemp))
-            )
-          ),
-          fluidRow(
-            plotOutput("cooltemp_distribution", width = "80%", height = "200px")
-          )
-      )
+    tabItems(
+      tabItem(tabName = "model",
+              fluidRow(
+                column(width = 4,
+                  box(title = "Linear Model", width = 12,
+                      lm_formula),
+                  box(title = "Distributions", width = 12,
+                      plotOutput("empirical_distributions"))
+                ),
+                box(width = 8, dataTableOutput("data_table"))
+              )
+              ),
+      tabItem(tabName = "simulation",
+              
+              column(width = 4,
+                     
+                     box(title = "Horse Power Parameters", width = NULL,
+                         fluidRow(
+                           column(width = 5,
+                                  numericInput("hp_mean", "Mean", 
+                                               value = round(mean(cars$hp)), 2)
+                           ),
+                           column(width = 5,
+                                  numericInput("hp_sd", "SD", 
+                                               value = round(sd(cars$hp)), 2)
+                           )
+                         ),
+                         fluidRow(
+                           plotOutput("hp_distribution", width = "80%", height = "200px")
+                         )
+                     ),
+                     box(title = "Weight Parameters", width = NULL,
+                         fluidRow(
+                           column(width = 5,
+                                  numericInput("wt_mean", "Mean", 
+                                               value = round(mean(cars$wt)), 2)
+                           ),
+                           column(width = 5,
+                                  numericInput("wt_sd", "SD", 
+                                               value = round(sd(cars$wt)), 2)
+                           )
+                         ),
+                         fluidRow(
+                           plotOutput("wt_distribution", width = "80%", height = "200px")
+                         )
+                     )
+                     )
+               
+              )
+              )
     )
+    
   )
-)
+

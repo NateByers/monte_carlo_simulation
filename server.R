@@ -2,31 +2,27 @@
 
 shinyServer(function(input, output) {
   
-  output$injpress_distribution <- renderPlot({
-    mu <- input$injpress_mean
-    stdv <- input$injpress_sd
-    xseq <- seq(mu - 4*stdv, mu + 4*stdv, .01*stdv)
-    densities<-dnorm(xseq, mu, stdv)
-    plot(xseq, densities, col="darkgreen",xlab="", ylab="Density", type="l",
-         lwd=2, cex=2, main="PDF of Standard Normal", cex.axis=.8)
+  output$empirical_distributions <- renderPlot({
+    par(mfrow=c(4,1))
+    for(i in c("mpg", "cyl", "hp", "wt")){
+      hist(cars[[i]], main = i, xlab = "")
+    }
   })
   
-  output$injtemp_distribution <- renderPlot({
-    mu <- input$injtemp_mean
-    stdv <- input$injtemp_sd
-    xseq <- seq(mu - 4*stdv, mu + 4*stdv, .01*stdv)
-    densities <- dnorm(xseq, mu, stdv)
-    plot(xseq, densities, col="darkgreen",xlab="", ylab="Density", type="l",
-         lwd=2, cex=2, main="PDF of Standard Normal", cex.axis=.8)
+  output$data_table <- renderDataTable({
+    cars[, c("mpg", "cyl", "hp", "wt")]
   })
   
-  output$cooltemp_distribution <- renderPlot({
-    mu <- input$cooltemp_mean
-    stdv <- input$cooltemp_sd
-    xseq <- seq(mu - 4*stdv, mu + 4*stdv, .01*stdv)
-    densities <- dnorm(xseq, mu, stdv)
-    plot(xseq, densities, col="darkgreen",xlab="", ylab="Density", type="l",
-         lwd=2, cex=2, main="PDF of Standard Normal", cex.axis=.8)
+  output$cyl_distribution <- renderPlot({
+    plot_distribution(input$cyl_mean, input$cyl_sd)
+  })
+  
+  output$hp_distribution <- renderPlot({
+    plot_distribution(input$hp_mean, input$hp_sd)
+  })
+  
+  output$wt_distribution <- renderPlot({
+    plot_distribution(input$wt_mean, input$wt_sd)
   })
   
 })
