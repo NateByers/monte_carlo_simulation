@@ -31,4 +31,9 @@ simulate_data <- function(n, sigma = cars_sigma, mus, sds) {
   for(i in seq_along(mus)) {
     sims[, i] <- sds[i]*sims[, i] + mus[i]
   }
+  
+  sims <- as.data.frame(sims)
+  names(sims) <- c("cyl", "hp", "wt")
+  
+  sims
 }

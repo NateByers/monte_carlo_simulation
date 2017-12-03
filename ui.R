@@ -24,7 +24,6 @@ dashboardPage(
       tabItem(tabName = "simulation",
               
               column(width = 4,
-                     
                      box(title = "Horse Power Parameters", width = NULL,
                          fluidRow(
                            column(width = 5,
@@ -55,6 +54,14 @@ dashboardPage(
                            plotOutput("wt_distribution", width = "80%", height = "200px")
                          )
                      )
+                     ),
+              column(width = 1,
+                     actionButton("simulate", "Simulate")
+              ),
+              column(width = 7,
+                     box(title = "Predicted MPG from 10,000 simulated inputs", width = NULL,
+                         plotOutput("predicted")
+                         )
                      )
                
               )
